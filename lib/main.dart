@@ -33,41 +33,16 @@ class _MyCalculator extends State<MyCalculator>
   final Color _highlightColor = Colors.teal.shade200;
   final Color _textColor = Colors.black;
 
+  var pressedSymbol = '';
+  double value = 0.0, tmpValue = 0.0, result = 0.0;
+  StringBuffer strBuf = new StringBuffer();
+  String temp = "0";
+
   Widget build(BuildContext context)
   {
     var buttonHeight = MediaQuery.of(context).size.height / 12;
     var normalButtonWidth = MediaQuery.of(context).size.width / 6;
     var wideButtonWidth = normalButtonWidth * 3;
-    
-    var pressedSymbol = '';
-    double firstValue = 0.0, secondValue = 0.0, result = 0.0;
-    StringBuffer strBuf = new StringBuffer();
-    String temp = "0", lastCalc = "";
-
-    double calculate(double firstValue, double secondValue, var symbol)
-    {
-      switch(symbol)
-      {
-        case '+':
-          firstValue = firstValue + secondValue;
-          break;
-        case '-':
-          firstValue = firstValue - secondValue;
-          break;
-        case '*':
-          firstValue = firstValue * secondValue;
-          break;
-        case '/':
-          if(firstValue != 0){
-            firstValue = firstValue / secondValue;
-          }
-          else{
-            firstValue = 0;
-          }
-          break;
-      }
-      return firstValue;
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +57,7 @@ class _MyCalculator extends State<MyCalculator>
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child: Text("Result : $result",
+                child: Text("Result : $value",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: _textColor,
@@ -93,7 +68,7 @@ class _MyCalculator extends State<MyCalculator>
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child: Text(temp,
+                child: Text("Input : " + strBuf.toString(),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: _textColor)
                 )
@@ -112,9 +87,7 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        lastCalc = strBuf.toString();
                         strBuf.clear();
-                        firstValue = secondValue = result = 0;
                       });
                     }
                   ),
@@ -129,9 +102,19 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        
-                        secondValue = double.parse(strBuf.toString());
-                        calculate(firstValue, secondValue, pressedSymbol);                  
+                        tmpValue = double.parse(strBuf.toString());
+                        if(pressedSymbol == "+"){
+                          value += tmpValue;
+                        }
+                        if(pressedSymbol == "-"){
+                          value -= tmpValue;
+                        }
+                        if(pressedSymbol == "*"){
+                          value *= tmpValue;
+                        }
+                        if(value != 0 && pressedSymbol == "/"){
+                          value /= tmpValue;
+                        }
                       });
                     }
                   )
@@ -152,7 +135,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write("1");
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -167,7 +149,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(2);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -182,21 +163,24 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(3);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
                   OutlinedButton(
-                    child: Text("+", textAlign: TextAlign.center, style: TextStyle(color: _textColor)),
+                    child: Text("+",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: _textColor)
+                    ),
                     style: OutlinedButton.styleFrom(
                       fixedSize: Size(normalButtonWidth, buttonHeight),
                       backgroundColor: _highlightColor
                     ),
                     onPressed: (){
                       setState((){
-                        firstValue = double.parse(strBuf.toString());
-                        pressedSymbol = '+';
+                        tmpValue = double.parse(strBuf.toString());
+                        value += tmpValue;
                         strBuf.clear();
+                        pressedSymbol = "+";
                       });
                     }
                   )
@@ -217,7 +201,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(4);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -232,7 +215,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(5);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -247,7 +229,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(6);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -262,9 +243,10 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        firstValue = double.parse(strBuf.toString());
-                        pressedSymbol = '-';
-                        strBuf.clear();                        
+                        tmpValue = double.parse(strBuf.toString());
+                        value -= tmpValue;
+                        strBuf.clear();
+                        pressedSymbol = "-";                  
                       });
                     }
                   )
@@ -285,7 +267,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(7);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -300,7 +281,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(8);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -315,7 +295,6 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.write(9);
-                        temp = strBuf.toString();
                       });
                     }
                   ),
@@ -330,9 +309,10 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        firstValue = double.parse(strBuf.toString());
-                        pressedSymbol = '*';
-                        strBuf.clear();                        
+                        tmpValue = double.parse(strBuf.toString());
+                        value *= tmpValue;
+                        strBuf.clear();
+                        pressedSymbol = "*";                       
                       });
                     }
                   )
@@ -367,9 +347,13 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        firstValue = double.parse(strBuf.toString());
-                        pressedSymbol = '/';
-                        strBuf.clear();                        
+                        if(value != 0)
+                        {
+                          tmpValue = double.parse(strBuf.toString());
+                          value /= tmpValue;
+                        }
+                        strBuf.clear();
+                        pressedSymbol = "/";                    
                       });
                     }
                   )
