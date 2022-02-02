@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-void main()
-{
+void main(){
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget
-{
+class MyApp extends StatelessWidget{
   final String _title = "Calculator";
   final MaterialColor _backgroundColor = Colors.teal;
 
@@ -21,25 +19,22 @@ class MyApp extends StatelessWidget
   }
 }
 
-class MyCalculator extends StatefulWidget
-{
+class MyCalculator extends StatefulWidget{
   State<StatefulWidget> createState(){
     return _MyCalculator();
   }
 }
 
-class _MyCalculator extends State<MyCalculator>
-{
+class _MyCalculator extends State<MyCalculator>{
   final Color _highlightColor = Colors.teal.shade200;
   final Color _textColor = Colors.black;
 
   var pressedSymbol = '';
-  double value = 0.0, tmpValue = 0.0, result = 0.0;
+  double result = 0.0, value = 0.0;
   StringBuffer strBuf = new StringBuffer();
   String temp = "0";
 
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context){
     var buttonHeight = MediaQuery.of(context).size.height / 12;
     var normalButtonWidth = MediaQuery.of(context).size.width / 6;
     var wideButtonWidth = normalButtonWidth * 3;
@@ -57,7 +52,7 @@ class _MyCalculator extends State<MyCalculator>
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
-                child: Text("Result : $value",
+                child: Text("Result : $result",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: _textColor,
@@ -88,6 +83,7 @@ class _MyCalculator extends State<MyCalculator>
                     onPressed: (){
                       setState((){
                         strBuf.clear();
+                        result = value = 0.0;
                       });
                     }
                   ),
@@ -102,18 +98,19 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        tmpValue = double.parse(strBuf.toString());
+                        value = double.parse(strBuf.toString());
+                        strBuf.clear();
                         if(pressedSymbol == "+"){
-                          value += tmpValue;
+                          result += value;
                         }
                         if(pressedSymbol == "-"){
-                          value -= tmpValue;
+                          result -= value;
                         }
                         if(pressedSymbol == "*"){
-                          value *= tmpValue;
+                          result *= value;
                         }
-                        if(value != 0 && pressedSymbol == "/"){
-                          value /= tmpValue;
+                        if(result != 0 && pressedSymbol == "/"){
+                          result /= value;
                         }
                       });
                     }
@@ -177,8 +174,8 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        tmpValue = double.parse(strBuf.toString());
-                        value += tmpValue;
+                        value = double.parse(strBuf.toString());
+                        result += value;
                         strBuf.clear();
                         pressedSymbol = "+";
                       });
@@ -243,8 +240,8 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        tmpValue = double.parse(strBuf.toString());
-                        value -= tmpValue;
+                        value = double.parse(strBuf.toString());
+                        result -= value;
                         strBuf.clear();
                         pressedSymbol = "-";                  
                       });
@@ -309,8 +306,8 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        tmpValue = double.parse(strBuf.toString());
-                        value *= tmpValue;
+                        value = double.parse(strBuf.toString());
+                        result *= value;
                         strBuf.clear();
                         pressedSymbol = "*";                       
                       });
@@ -347,13 +344,13 @@ class _MyCalculator extends State<MyCalculator>
                     ),
                     onPressed: (){
                       setState((){
-                        if(value != 0)
+                        if(result != 0)
                         {
-                          tmpValue = double.parse(strBuf.toString());
-                          value /= tmpValue;
+                          value = double.parse(strBuf.toString());
+                          result /= value;
+                          pressedSymbol = "/";                            
                         }
                         strBuf.clear();
-                        pressedSymbol = "/";                    
                       });
                     }
                   )
