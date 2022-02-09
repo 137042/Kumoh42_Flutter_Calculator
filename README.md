@@ -1,1 +1,2 @@
-"# Kumoh42_Flutter_Calculator" 
+## Kumoh42 Study
+Flutter로 만드는 Calculator
